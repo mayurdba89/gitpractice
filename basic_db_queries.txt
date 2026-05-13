@@ -1,0 +1,13 @@
+"db_name": {
+        "sql": "select name from v$database"
+    },
+    "database_role": {
+        "sql": "select database_role from v$database"
+    },
+    "instance": {
+        "sql": "select inst_id, instance_name, status, startup_time, host_name from gv$instance order by inst_id"
+    },
+    "instance_connected": {
+        "sql": "select instance_name from v$instance"
+    },
+

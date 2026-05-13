@@ -1,0 +1,605 @@
+[root@localhost terraform-oci]# ls -lrt
+total 76
+-rw-r--r--. 1 root root   132 May 12 05:44 provider.tf
+-rw-r--r--. 1 root root    60 May 12 05:44 variables.tf
+-rw-r--r--. 1 root root   700 May 12 05:49 terraform.tfvars
+-rw-r--r--. 1 root root  2277 May 12 05:53 main.tf
+-rw-r--r--. 1 root root   358 May 13 02:21 importvm.tf
+-rw-r--r--. 1 root root 31863 May 13 02:25 terraform.tfstate.backup
+-rw-r--r--. 1 root root 23247 May 13 02:25 terraform.tfstate
+[root@localhost terraform-oci]# vi adb.tf
+[root@localhost terraform-oci]# cat adb.tf
+resource "oci_database_autonomous_database" "puntrdb" {
+
+  compartment_id = var.compartment_ocid
+
+  db_name      = "PUNTRDB"
+  display_name = "puntrdb"
+
+  db_workload = "OLTP"
+
+  is_free_tier = true
+
+  cpu_core_count = 1
+
+  data_storage_size_in_tbs = 1
+
+  admin_password = "Welcome_1234"
+
+}
+[root@localhost terraform-oci]# terraform validate
+Success! The configuration is valid.
+
+[root@localhost terraform-oci]# terraform plan
+oci_core_vcn.my_vcn: Refreshing state... [id=ocid1.vcn.oc1.ap-mumbai-1.amaaaaaahzzyffqaypgf3uo5jqsl4psadyaw6paz7cchsm34ywaxarfgtdwq]
+data.oci_core_images.oracle_linux: Reading...
+data.oci_identity_availability_domains.ads: Reading...
+data.oci_identity_availability_domains.ads: Read complete after 0s [id=IdentityAvailabilityDomainsDataSource-2575362926]
+oci_core_internet_gateway.igw: Refreshing state... [id=ocid1.internetgateway.oc1.ap-mumbai-1.aaaaaaaaxhhnsreupuvnc33bbtvm6z5qhv4xvfjh7xizq27s4j2xnipkmjja]
+oci_core_security_list.sl: Refreshing state... [id=ocid1.securitylist.oc1.ap-mumbai-1.aaaaaaaa7q5j5gchdyado4fxlsxuqfwbrkujy7pbhvpiwxpqu7ten6urkbja]
+data.oci_core_images.oracle_linux: Read complete after 0s [id=CoreImagesDataSource-2930918378]
+oci_core_route_table.rt: Refreshing state... [id=ocid1.routetable.oc1.ap-mumbai-1.aaaaaaaau3ivkfwdoaa7lainlbat23twimdk3xjcwvyrjmtxmdaplwj4thha]
+oci_core_subnet.my_subnet: Refreshing state... [id=ocid1.subnet.oc1.ap-mumbai-1.aaaaaaaau2hn3w6zruty53nlctexhcfhvfc7fxdb6lbyhtowdiwhmsvcf4jq]
+oci_core_instance.my_instance: Refreshing state... [id=ocid1.instance.oc1.ap-mumbai-1.anrg6ljrhzzyffqcf3r3o36fwkcpaojcpfd4ico3ktclxbe3iiahczv5ossa]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # oci_core_instance.manual_vm will be created
+  + resource "oci_core_instance" "manual_vm" {
+      + availability_domain                 = "Itbz:AP-MUMBAI-1-AD-1"
+      + boot_volume_id                      = (known after apply)
+      + capacity_reservation_id             = (known after apply)
+      + compartment_id                      = "ocid1.tenancy.oc1..aaaaaaaaxmrz7zwkd6bhdyjlmtwrtzhyfxng7p32khpiiui5yhkt5dste7la"
+      + compute_cluster_id                  = (known after apply)
+      + dedicated_vm_host_id                = (known after apply)
+      + defined_tags                        = (known after apply)
+      + display_name                        = (known after apply)
+      + extended_metadata                   = (known after apply)
+      + fault_domain                        = (known after apply)
+      + freeform_tags                       = (known after apply)
+      + hostname_label                      = (known after apply)
+      + id                                  = (known after apply)
+      + image                               = (known after apply)
+      + instance_configuration_id           = (known after apply)
+      + ipxe_script                         = (known after apply)
+      + is_ai_enterprise_enabled            = (known after apply)
+      + is_cross_numa_node                  = (known after apply)
+      + is_pv_encryption_in_transit_enabled = (known after apply)
+      + launch_mode                         = (known after apply)
+      + metadata                            = (known after apply)
+      + private_ip                          = (known after apply)
+      + public_ip                           = (known after apply)
+      + region                              = (known after apply)
+      + security_attributes                 = (known after apply)
+      + security_attributes_state           = (known after apply)
+      + shape                               = "VM.Standard.E2.1.Micro"
+      + state                               = (known after apply)
+      + subnet_id                           = (known after apply)
+      + system_tags                         = (known after apply)
+      + time_created                        = (known after apply)
+      + time_maintenance_reboot_due         = (known after apply)
+
+      + create_vnic_details {
+          + assign_ipv6ip          = (known after apply)
+          + assign_public_ip       = "true"
+          + defined_tags           = (known after apply)
+          + display_name           = (known after apply)
+          + freeform_tags          = (known after apply)
+          + hostname_label         = (known after apply)
+          + nsg_ids                = (known after apply)
+          + private_ip             = (known after apply)
+          + private_ip_id          = (known after apply)
+          + security_attributes    = (known after apply)
+          + skip_source_dest_check = (known after apply)
+          + subnet_cidr            = (known after apply)
+          + subnet_id              = "ocid1.subnet.oc1.ap-mumbai-1.aaaaaaaau2hn3w6zruty53nlctexhcfhvfc7fxdb6lbyhtowdiwhmsvcf4jq"
+          + vlan_id                = (known after apply)
+        }
+
+      + source_details {
+          + boot_volume_size_in_gbs = (known after apply)
+          + boot_volume_vpus_per_gb = (known after apply)
+          + source_id               = "ocid1.image.oc1.ap-mumbai-1.aaaaaaaave4fekfjm2vimed7wqpk3xu5vugsrmeqqenez37p63a4m2cy2pbq"
+          + source_type             = "image"
+        }
+    }
+
+  # oci_core_instance.my_instance will be updated in-place
+  ~ resource "oci_core_instance" "my_instance" {
+        id                          = "ocid1.instance.oc1.ap-mumbai-1.anrg6ljrhzzyffqcf3r3o36fwkcpaojcpfd4ico3ktclxbe3iiahczv5ossa"
+        # (24 unchanged attributes hidden)
+
+      ~ source_details {
+          ~ source_id                       = "ocid1.image.oc1.ap-mumbai-1.aaaaaaaaqzha3rm5vx6cp5wsgdtxajngkg36cobyqilcr53ia4o7elc6653q" -> "ocid1.image.oc1.ap-mumbai-1.aaaaaaaave4fekfjm2vimed7wqpk3xu5vugsrmeqqenez37p63a4m2cy2pbq"
+            # (5 unchanged attributes hidden)
+        }
+
+        # (6 unchanged blocks hidden)
+    }
+
+  # oci_database_autonomous_database.puntrdb will be created
+  + resource "oci_database_autonomous_database" "puntrdb" {
+      + actual_used_data_storage_size_in_tbs           = (known after apply)
+      + additional_attributes                          = (known after apply)
+      + admin_password                                 = (sensitive value)
+      + allocated_storage_size_in_tbs                  = (known after apply)
+      + apex_details                                   = (known after apply)
+      + are_primary_whitelisted_ips_used               = (known after apply)
+      + auto_refresh_frequency_in_seconds              = (known after apply)
+      + auto_refresh_point_lag_in_seconds              = (known after apply)
+      + autonomous_container_database_id               = (known after apply)
+      + autonomous_database_backup_id                  = (known after apply)
+      + autonomous_database_id                         = (known after apply)
+      + autonomous_maintenance_schedule_type           = (known after apply)
+      + availability_domain                            = (known after apply)
+      + available_upgrade_versions                     = (known after apply)
+      + backup_config                                  = (known after apply)
+      + backup_retention_period_in_days                = (known after apply)
+      + byol_compute_count_limit                       = (known after apply)
+      + character_set                                  = (known after apply)
+      + clone_table_space_list                         = (known after apply)
+      + clone_type                                     = (known after apply)
+      + cluster_placement_group_id                     = (known after apply)
+      + compartment_id                                 = "ocid1.tenancy.oc1..aaaaaaaaxmrz7zwkd6bhdyjlmtwrtzhyfxng7p32khpiiui5yhkt5dste7la"
+      + compute_count                                  = (known after apply)
+      + compute_model                                  = (known after apply)
+      + connection_strings                             = (known after apply)
+      + connection_urls                                = (known after apply)
+      + cpu_core_count                                 = 1
+      + data_safe_status                               = (known after apply)
+      + data_storage_size_in_gb                        = (known after apply)
+      + data_storage_size_in_tbs                       = 1
+      + database_edition                               = (known after apply)
+      + database_management_status                     = (known after apply)
+      + dataguard_region_type                          = (known after apply)
+      + db_name                                        = "PUNTRDB"
+      + db_version                                     = (known after apply)
+      + db_workload                                    = "OLTP"
+      + defined_tags                                   = (known after apply)
+      + disaster_recovery_region_type                  = (known after apply)
+      + disaster_recovery_type                         = (known after apply)
+      + display_name                                   = "puntrdb"
+      + encryption_key_history_entry                   = (known after apply)
+      + encryption_key_location_details                = (known after apply)
+      + failed_data_recovery_in_seconds                = (known after apply)
+      + freeform_tags                                  = (known after apply)
+      + id                                             = (known after apply)
+      + in_memory_area_in_gbs                          = (known after apply)
+      + in_memory_percentage                           = (known after apply)
+      + infrastructure_type                            = (known after apply)
+      + is_access_control_enabled                      = (known after apply)
+      + is_auto_scaling_enabled                        = (known after apply)
+      + is_auto_scaling_for_storage_enabled            = (known after apply)
+      + is_backup_retention_locked                     = (known after apply)
+      + is_data_guard_enabled                          = (known after apply)
+      + is_dedicated                                   = (known after apply)
+      + is_dev_tier                                    = (known after apply)
+      + is_disable_db_version_upgrade_schedule         = (known after apply)
+      + is_free_tier                                   = true
+      + is_local_data_guard_enabled                    = (known after apply)
+      + is_mtls_connection_required                    = (known after apply)
+      + is_preview                                     = (known after apply)
+      + is_preview_version_with_service_terms_accepted = (known after apply)
+      + is_reconnect_clone_enabled                     = (known after apply)
+      + is_refreshable_clone                           = (known after apply)
+      + is_remote_data_guard_enabled                   = (known after apply)
+      + is_replicate_automatic_backups                 = (known after apply)
+      + is_schedule_db_version_upgrade_to_earliest     = (known after apply)
+      + key_history_entry                              = (known after apply)
+      + key_store_id                                   = (known after apply)
+      + key_store_wallet_name                          = (known after apply)
+      + kms_key_id                                     = (known after apply)
+      + kms_key_lifecycle_details                      = (known after apply)
+      + kms_key_version_id                             = (known after apply)
+      + license_model                                  = (known after apply)
+      + lifecycle_details                              = (known after apply)
+      + local_adg_auto_failover_max_data_loss_limit    = (known after apply)
+      + local_adg_resource_pool_leader_id              = (known after apply)
+      + local_disaster_recovery_type                   = (known after apply)
+      + local_standby_db                               = (known after apply)
+      + maintenance_target_component                   = (known after apply)
+      + max_cpu_core_count                             = (known after apply)
+      + memory_per_compute_unit_in_gbs                 = (known after apply)
+      + memory_per_oracle_compute_unit_in_gbs          = (known after apply)
+      + ncharacter_set                                 = (known after apply)
+      + net_services_architecture                      = (known after apply)
+      + next_long_term_backup_time_stamp               = (known after apply)
+      + nsg_ids                                        = (known after apply)
+      + ocpu_count                                     = (known after apply)
+      + open_mode                                      = (known after apply)
+      + operations_insights_status                     = (known after apply)
+      + peer_db_id                                     = (known after apply)
+      + peer_db_ids                                    = (known after apply)
+      + permission_level                               = (known after apply)
+      + private_endpoint                               = (known after apply)
+      + private_endpoint_ip                            = (known after apply)
+      + private_endpoint_label                         = (known after apply)
+      + provisionable_cpus                             = (known after apply)
+      + public_connection_urls                         = (known after apply)
+      + public_endpoint                                = (known after apply)
+      + refreshable_mode                               = (known after apply)
+      + refreshable_status                             = (known after apply)
+      + remote_disaster_recovery_configuration         = (known after apply)
+      + remote_disaster_recovery_type                  = (known after apply)
+      + resource_pool_leader_id                        = (known after apply)
+      + role                                           = (known after apply)
+      + secret_id                                      = (known after apply)
+      + secret_version_number                          = (known after apply)
+      + security_attributes                            = (known after apply)
+      + service_console_url                            = (known after apply)
+      + shrink_adb_trigger                             = (known after apply)
+      + source                                         = (known after apply)
+      + source_id                                      = (known after apply)
+      + standby_db                                     = (known after apply)
+      + standby_whitelisted_ips                        = (known after apply)
+      + state                                          = (known after apply)
+      + subnet_id                                      = (known after apply)
+      + subscription_id                                = (known after apply)
+      + supported_regions_to_clone_to                  = (known after apply)
+      + system_tags                                    = (known after apply)
+      + time_created                                   = (known after apply)
+      + time_data_guard_role_changed                   = (known after apply)
+      + time_deletion_of_free_autonomous_database      = (known after apply)
+      + time_disaster_recovery_role_changed            = (known after apply)
+      + time_earliest_available_db_version_upgrade     = (known after apply)
+      + time_latest_available_db_version_upgrade       = (known after apply)
+      + time_local_data_guard_enabled                  = (known after apply)
+      + time_maintenance_begin                         = (known after apply)
+      + time_maintenance_end                           = (known after apply)
+      + time_maintenance_pause_until                   = (known after apply)
+      + time_of_auto_refresh_start                     = (known after apply)
+      + time_of_joining_resource_pool                  = (known after apply)
+      + time_of_last_failover                          = (known after apply)
+      + time_of_last_refresh                           = (known after apply)
+      + time_of_last_refresh_point                     = (known after apply)
+      + time_of_last_switchover                        = (known after apply)
+      + time_of_next_refresh                           = (known after apply)
+      + time_reclamation_of_free_autonomous_database   = (known after apply)
+      + time_scheduled_db_version_upgrade              = (known after apply)
+      + time_undeleted                                 = (known after apply)
+      + time_until_reconnect_clone_enabled             = (known after apply)
+      + timestamp                                      = (known after apply)
+      + total_backup_storage_size_in_gbs               = (known after apply)
+      + use_latest_available_backup_time_stamp         = (known after apply)
+      + used_data_storage_size_in_gbs                  = (known after apply)
+      + used_data_storage_size_in_tbs                  = (known after apply)
+      + vanity_connection_urls                         = (known after apply)
+      + vault_id                                       = (known after apply)
+    }
+
+Plan: 2 to add, 1 to change, 0 to destroy.
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
+[root@localhost terraform-oci]# terraform apply
+data.oci_core_images.oracle_linux: Reading...
+data.oci_identity_availability_domains.ads: Reading...
+oci_core_vcn.my_vcn: Refreshing state... [id=ocid1.vcn.oc1.ap-mumbai-1.amaaaaaahzzyffqaypgf3uo5jqsl4psadyaw6paz7cchsm34ywaxarfgtdwq]
+data.oci_identity_availability_domains.ads: Read complete after 0s [id=IdentityAvailabilityDomainsDataSource-2575362926]
+data.oci_core_images.oracle_linux: Read complete after 0s [id=CoreImagesDataSource-2930918378]
+oci_core_internet_gateway.igw: Refreshing state... [id=ocid1.internetgateway.oc1.ap-mumbai-1.aaaaaaaaxhhnsreupuvnc33bbtvm6z5qhv4xvfjh7xizq27s4j2xnipkmjja]
+oci_core_security_list.sl: Refreshing state... [id=ocid1.securitylist.oc1.ap-mumbai-1.aaaaaaaa7q5j5gchdyado4fxlsxuqfwbrkujy7pbhvpiwxpqu7ten6urkbja]
+oci_core_route_table.rt: Refreshing state... [id=ocid1.routetable.oc1.ap-mumbai-1.aaaaaaaau3ivkfwdoaa7lainlbat23twimdk3xjcwvyrjmtxmdaplwj4thha]
+oci_core_subnet.my_subnet: Refreshing state... [id=ocid1.subnet.oc1.ap-mumbai-1.aaaaaaaau2hn3w6zruty53nlctexhcfhvfc7fxdb6lbyhtowdiwhmsvcf4jq]
+oci_core_instance.my_instance: Refreshing state... [id=ocid1.instance.oc1.ap-mumbai-1.anrg6ljrhzzyffqcf3r3o36fwkcpaojcpfd4ico3ktclxbe3iiahczv5ossa]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # oci_core_instance.manual_vm will be created
+  + resource "oci_core_instance" "manual_vm" {
+      + availability_domain                 = "Itbz:AP-MUMBAI-1-AD-1"
+      + boot_volume_id                      = (known after apply)
+      + capacity_reservation_id             = (known after apply)
+      + compartment_id                      = "ocid1.tenancy.oc1..aaaaaaaaxmrz7zwkd6bhdyjlmtwrtzhyfxng7p32khpiiui5yhkt5dste7la"
+      + compute_cluster_id                  = (known after apply)
+      + dedicated_vm_host_id                = (known after apply)
+      + defined_tags                        = (known after apply)
+      + display_name                        = (known after apply)
+      + extended_metadata                   = (known after apply)
+      + fault_domain                        = (known after apply)
+      + freeform_tags                       = (known after apply)
+      + hostname_label                      = (known after apply)
+      + id                                  = (known after apply)
+      + image                               = (known after apply)
+      + instance_configuration_id           = (known after apply)
+      + ipxe_script                         = (known after apply)
+      + is_ai_enterprise_enabled            = (known after apply)
+      + is_cross_numa_node                  = (known after apply)
+      + is_pv_encryption_in_transit_enabled = (known after apply)
+      + launch_mode                         = (known after apply)
+      + metadata                            = (known after apply)
+      + private_ip                          = (known after apply)
+      + public_ip                           = (known after apply)
+      + region                              = (known after apply)
+      + security_attributes                 = (known after apply)
+      + security_attributes_state           = (known after apply)
+      + shape                               = "VM.Standard.E2.1.Micro"
+      + state                               = (known after apply)
+      + subnet_id                           = (known after apply)
+      + system_tags                         = (known after apply)
+      + time_created                        = (known after apply)
+      + time_maintenance_reboot_due         = (known after apply)
+
+      + create_vnic_details {
+          + assign_ipv6ip          = (known after apply)
+          + assign_public_ip       = "true"
+          + defined_tags           = (known after apply)
+          + display_name           = (known after apply)
+          + freeform_tags          = (known after apply)
+          + hostname_label         = (known after apply)
+          + nsg_ids                = (known after apply)
+          + private_ip             = (known after apply)
+          + private_ip_id          = (known after apply)
+          + security_attributes    = (known after apply)
+          + skip_source_dest_check = (known after apply)
+          + subnet_cidr            = (known after apply)
+          + subnet_id              = "ocid1.subnet.oc1.ap-mumbai-1.aaaaaaaau2hn3w6zruty53nlctexhcfhvfc7fxdb6lbyhtowdiwhmsvcf4jq"
+          + vlan_id                = (known after apply)
+        }
+
+      + source_details {
+          + boot_volume_size_in_gbs = (known after apply)
+          + boot_volume_vpus_per_gb = (known after apply)
+          + source_id               = "ocid1.image.oc1.ap-mumbai-1.aaaaaaaave4fekfjm2vimed7wqpk3xu5vugsrmeqqenez37p63a4m2cy2pbq"
+          + source_type             = "image"
+        }
+    }
+
+  # oci_core_instance.my_instance will be updated in-place
+  ~ resource "oci_core_instance" "my_instance" {
+        id                          = "ocid1.instance.oc1.ap-mumbai-1.anrg6ljrhzzyffqcf3r3o36fwkcpaojcpfd4ico3ktclxbe3iiahczv5ossa"
+        # (24 unchanged attributes hidden)
+
+      ~ source_details {
+          ~ source_id                       = "ocid1.image.oc1.ap-mumbai-1.aaaaaaaaqzha3rm5vx6cp5wsgdtxajngkg36cobyqilcr53ia4o7elc6653q" -> "ocid1.image.oc1.ap-mumbai-1.aaaaaaaave4fekfjm2vimed7wqpk3xu5vugsrmeqqenez37p63a4m2cy2pbq"
+            # (5 unchanged attributes hidden)
+        }
+
+        # (6 unchanged blocks hidden)
+    }
+
+  # oci_database_autonomous_database.puntrdb will be created
+  + resource "oci_database_autonomous_database" "puntrdb" {
+      + actual_used_data_storage_size_in_tbs           = (known after apply)
+      + additional_attributes                          = (known after apply)
+      + admin_password                                 = (sensitive value)
+      + allocated_storage_size_in_tbs                  = (known after apply)
+      + apex_details                                   = (known after apply)
+      + are_primary_whitelisted_ips_used               = (known after apply)
+      + auto_refresh_frequency_in_seconds              = (known after apply)
+      + auto_refresh_point_lag_in_seconds              = (known after apply)
+      + autonomous_container_database_id               = (known after apply)
+      + autonomous_database_backup_id                  = (known after apply)
+      + autonomous_database_id                         = (known after apply)
+      + autonomous_maintenance_schedule_type           = (known after apply)
+      + availability_domain                            = (known after apply)
+      + available_upgrade_versions                     = (known after apply)
+      + backup_config                                  = (known after apply)
+      + backup_retention_period_in_days                = (known after apply)
+      + byol_compute_count_limit                       = (known after apply)
+      + character_set                                  = (known after apply)
+      + clone_table_space_list                         = (known after apply)
+      + clone_type                                     = (known after apply)
+      + cluster_placement_group_id                     = (known after apply)
+      + compartment_id                                 = "ocid1.tenancy.oc1..aaaaaaaaxmrz7zwkd6bhdyjlmtwrtzhyfxng7p32khpiiui5yhkt5dste7la"
+      + compute_count                                  = (known after apply)
+      + compute_model                                  = (known after apply)
+      + connection_strings                             = (known after apply)
+      + connection_urls                                = (known after apply)
+      + cpu_core_count                                 = 1
+      + data_safe_status                               = (known after apply)
+      + data_storage_size_in_gb                        = (known after apply)
+      + data_storage_size_in_tbs                       = 1
+      + database_edition                               = (known after apply)
+      + database_management_status                     = (known after apply)
+      + dataguard_region_type                          = (known after apply)
+      + db_name                                        = "PUNTRDB"
+      + db_version                                     = (known after apply)
+      + db_workload                                    = "OLTP"
+      + defined_tags                                   = (known after apply)
+      + disaster_recovery_region_type                  = (known after apply)
+      + disaster_recovery_type                         = (known after apply)
+      + display_name                                   = "puntrdb"
+      + encryption_key_history_entry                   = (known after apply)
+      + encryption_key_location_details                = (known after apply)
+      + failed_data_recovery_in_seconds                = (known after apply)
+      + freeform_tags                                  = (known after apply)
+      + id                                             = (known after apply)
+      + in_memory_area_in_gbs                          = (known after apply)
+      + in_memory_percentage                           = (known after apply)
+      + infrastructure_type                            = (known after apply)
+      + is_access_control_enabled                      = (known after apply)
+      + is_auto_scaling_enabled                        = (known after apply)
+      + is_auto_scaling_for_storage_enabled            = (known after apply)
+      + is_backup_retention_locked                     = (known after apply)
+      + is_data_guard_enabled                          = (known after apply)
+      + is_dedicated                                   = (known after apply)
+      + is_dev_tier                                    = (known after apply)
+      + is_disable_db_version_upgrade_schedule         = (known after apply)
+      + is_free_tier                                   = true
+      + is_local_data_guard_enabled                    = (known after apply)
+      + is_mtls_connection_required                    = (known after apply)
+      + is_preview                                     = (known after apply)
+      + is_preview_version_with_service_terms_accepted = (known after apply)
+      + is_reconnect_clone_enabled                     = (known after apply)
+      + is_refreshable_clone                           = (known after apply)
+      + is_remote_data_guard_enabled                   = (known after apply)
+      + is_replicate_automatic_backups                 = (known after apply)
+      + is_schedule_db_version_upgrade_to_earliest     = (known after apply)
+      + key_history_entry                              = (known after apply)
+      + key_store_id                                   = (known after apply)
+      + key_store_wallet_name                          = (known after apply)
+      + kms_key_id                                     = (known after apply)
+      + kms_key_lifecycle_details                      = (known after apply)
+      + kms_key_version_id                             = (known after apply)
+      + license_model                                  = (known after apply)
+      + lifecycle_details                              = (known after apply)
+      + local_adg_auto_failover_max_data_loss_limit    = (known after apply)
+      + local_adg_resource_pool_leader_id              = (known after apply)
+      + local_disaster_recovery_type                   = (known after apply)
+      + local_standby_db                               = (known after apply)
+      + maintenance_target_component                   = (known after apply)
+      + max_cpu_core_count                             = (known after apply)
+      + memory_per_compute_unit_in_gbs                 = (known after apply)
+      + memory_per_oracle_compute_unit_in_gbs          = (known after apply)
+      + ncharacter_set                                 = (known after apply)
+      + net_services_architecture                      = (known after apply)
+      + next_long_term_backup_time_stamp               = (known after apply)
+      + nsg_ids                                        = (known after apply)
+      + ocpu_count                                     = (known after apply)
+      + open_mode                                      = (known after apply)
+      + operations_insights_status                     = (known after apply)
+      + peer_db_id                                     = (known after apply)
+      + peer_db_ids                                    = (known after apply)
+      + permission_level                               = (known after apply)
+      + private_endpoint                               = (known after apply)
+      + private_endpoint_ip                            = (known after apply)
+      + private_endpoint_label                         = (known after apply)
+      + provisionable_cpus                             = (known after apply)
+      + public_connection_urls                         = (known after apply)
+      + public_endpoint                                = (known after apply)
+      + refreshable_mode                               = (known after apply)
+      + refreshable_status                             = (known after apply)
+      + remote_disaster_recovery_configuration         = (known after apply)
+      + remote_disaster_recovery_type                  = (known after apply)
+      + resource_pool_leader_id                        = (known after apply)
+      + role                                           = (known after apply)
+      + secret_id                                      = (known after apply)
+      + secret_version_number                          = (known after apply)
+      + security_attributes                            = (known after apply)
+      + service_console_url                            = (known after apply)
+      + shrink_adb_trigger                             = (known after apply)
+      + source                                         = (known after apply)
+      + source_id                                      = (known after apply)
+      + standby_db                                     = (known after apply)
+      + standby_whitelisted_ips                        = (known after apply)
+      + state                                          = (known after apply)
+      + subnet_id                                      = (known after apply)
+      + subscription_id                                = (known after apply)
+      + supported_regions_to_clone_to                  = (known after apply)
+      + system_tags                                    = (known after apply)
+      + time_created                                   = (known after apply)
+      + time_data_guard_role_changed                   = (known after apply)
+      + time_deletion_of_free_autonomous_database      = (known after apply)
+      + time_disaster_recovery_role_changed            = (known after apply)
+      + time_earliest_available_db_version_upgrade     = (known after apply)
+      + time_latest_available_db_version_upgrade       = (known after apply)
+      + time_local_data_guard_enabled                  = (known after apply)
+      + time_maintenance_begin                         = (known after apply)
+      + time_maintenance_end                           = (known after apply)
+      + time_maintenance_pause_until                   = (known after apply)
+      + time_of_auto_refresh_start                     = (known after apply)
+      + time_of_joining_resource_pool                  = (known after apply)
+      + time_of_last_failover                          = (known after apply)
+      + time_of_last_refresh                           = (known after apply)
+      + time_of_last_refresh_point                     = (known after apply)
+      + time_of_last_switchover                        = (known after apply)
+      + time_of_next_refresh                           = (known after apply)
+      + time_reclamation_of_free_autonomous_database   = (known after apply)
+      + time_scheduled_db_version_upgrade              = (known after apply)
+      + time_undeleted                                 = (known after apply)
+      + time_until_reconnect_clone_enabled             = (known after apply)
+      + timestamp                                      = (known after apply)
+      + total_backup_storage_size_in_gbs               = (known after apply)
+      + use_latest_available_backup_time_stamp         = (known after apply)
+      + used_data_storage_size_in_gbs                  = (known after apply)
+      + used_data_storage_size_in_tbs                  = (known after apply)
+      + vanity_connection_urls                         = (known after apply)
+      + vault_id                                       = (known after apply)
+    }
+
+Plan: 2 to add, 1 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+oci_database_autonomous_database.puntrdb: Creating...
+oci_core_instance.manual_vm: Creating...
+oci_core_instance.my_instance: Modifying... [id=ocid1.instance.oc1.ap-mumbai-1.anrg6ljrhzzyffqcf3r3o36fwkcpaojcpfd4ico3ktclxbe3iiahczv5ossa]
+oci_database_autonomous_database.puntrdb: Still creating... [10s elapsed]
+oci_core_instance.manual_vm: Still creating... [10s elapsed]
+oci_database_autonomous_database.puntrdb: Still creating... [20s elapsed]
+oci_core_instance.manual_vm: Still creating... [20s elapsed]
+oci_database_autonomous_database.puntrdb: Still creating... [30s elapsed]
+oci_core_instance.manual_vm: Still creating... [30s elapsed]
+oci_core_instance.manual_vm: Creation complete after 36s [id=ocid1.instance.oc1.ap-mumbai-1.anrg6ljrhzzyffqcigzqsxzb7732chcw4dy5gdxrukodg5s5sehjfx4g7hqq]
+oci_database_autonomous_database.puntrdb: Still creating... [40s elapsed]
+oci_database_autonomous_database.puntrdb: Still creating... [50s elapsed]
+oci_database_autonomous_database.puntrdb: Still creating... [1m0s elapsed]
+oci_database_autonomous_database.puntrdb: Still creating... [1m10s elapsed]
+oci_database_autonomous_database.puntrdb: Still creating... [1m20s elapsed]
+oci_database_autonomous_database.puntrdb: Still creating... [1m30s elapsed]
+oci_database_autonomous_database.puntrdb: Still creating... [1m40s elapsed]
+oci_database_autonomous_database.puntrdb: Still creating... [1m50s elapsed]
+oci_database_autonomous_database.puntrdb: Creation complete after 1m54s [id=ocid1.autonomousdatabase.oc1.ap-mumbai-1.anrg6ljrhzzyffqaohwxs4ie5kacq27z3nhe44s2nbjz27cozk4vt6o4ucia]
+╷
+│ Error: 400-InvalidParameter, Requested volume size 47GB is not in the allowed range. Boot volume should be greater than or equal to 50GB and less than or equal to 32,768GB.
+│ Suggestion: Please update the parameter(s) in the Terraform config as per error message Requested volume size 47GB is not in the allowed range. Boot volume should be greater than or equal to 50GB and less than or equal to 32,768GB.
+│ Documentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance
+│ API Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/UpdateInstance
+│ Request Target: PUT https://iaas.ap-mumbai-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.ap-mumbai-1.anrg6ljrhzzyffqcf3r3o36fwkcpaojcpfd4ico3ktclxbe3iiahczv5ossa
+│ Provider version: 8.13.0, released on 2026-05-05. This provider is 1 Update(s) behind to current.
+│ Service: Core Instance
+│ Operation Name: UpdateInstance
+│ OPC request ID: 0fc59dc63f8b97eb509642406148afc5/CC2E0C79338C4AF9BB1B046A424F4D07/148AEA78B1D42F8842A4DCF416362C40
+│
+│
+│   with oci_core_instance.my_instance,
+│   on main.tf line 73, in resource "oci_core_instance" "my_instance":
+│   73: resource "oci_core_instance" "my_instance" {
+│
+╵
+[root@localhost terraform-oci]# terraform state list
+data.oci_core_images.oracle_linux
+data.oci_identity_availability_domains.ads
+oci_core_instance.manual_vm
+oci_core_instance.my_instance
+oci_core_internet_gateway.igw
+oci_core_route_table.rt
+oci_core_security_list.sl
+oci_core_subnet.my_subnet
+oci_core_vcn.my_vcn
+oci_database_autonomous_database.puntrdb
+[root@localhost terraform-oci]# ls -lrt
+total 96
+-rw-r--r--. 1 root root   132 May 12 05:44 provider.tf
+-rw-r--r--. 1 root root    60 May 12 05:44 variables.tf
+-rw-r--r--. 1 root root   700 May 12 05:49 terraform.tfvars
+-rw-r--r--. 1 root root  2277 May 12 05:53 main.tf
+-rw-r--r--. 1 root root   358 May 13 02:21 importvm.tf
+-rw-r--r--. 1 root root   291 May 13 02:32 adb.tf
+-rw-r--r--. 1 root root 23247 May 13 02:35 terraform.tfstate.backup
+-rw-r--r--. 1 root root 48327 May 13 02:37 terraform.tfstate
+[root@localhost terraform-oci]# cat adb.tf
+resource "oci_database_autonomous_database" "puntrdb" {
+
+  compartment_id = var.compartment_ocid
+
+  db_name      = "PUNTRDB"
+  display_name = "puntrdb"
+
+  db_workload = "OLTP"
+
+  is_free_tier = true
+
+  cpu_core_count = 1
+
+  data_storage_size_in_tbs = 1
+
+  admin_password = "Welcome_1234"
+
+}
+[root@localhost terraform-oci]#
+
